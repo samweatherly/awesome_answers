@@ -1,0 +1,48 @@
+<%# this will be used as a default layout. %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AwesomeAnswer</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+
+
+</head>
+<body>
+
+<!-- hello_path and abot_path are called route helper. THey get generated
+from the content of 'routes.rb' and they are methods that can be used in
+all view files and controllers -->
+<!-- <a href="/hello">Hello</a> | -->
+<a href="<%= hello_path %>">Hello</a> |
+<!-- <a href="/about">About</a> | -->
+<a href="<%= about_path %>">About</a> |
+<a href="<%= greet_path('John') %>"> Greet John </a>  |
+
+<!-- link_to is a Rails helper method. It's a view helper method,
+meaning it's only accessible in the views/view helpers.
+link_to takes a first argument which is the anchor text and a second
+argument which is the 'href' value (url/path). It can take other
+options as we will see later. More info here at api.rubyonrails.org
+http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to
+ -->
+<%= link_to "Subscribe", subscribe_path %>  |
+<%= link_to "New Question", new_question_path %>  |
+<%= link_to "All Questions", questions_path %>  |
+
+
+<% if user_signed_in? %>
+  Hello <%= current_user.first_name %>
+  <%= link_to "Logout", sessions_path, method: :delete %>
+<% else %>
+  <%= link_to "Sign Up", new_user_path %>
+<% end %>
+
+
+<%= notice || alert %>
+
+<%= yield %>
+
+</body>
+</html>
