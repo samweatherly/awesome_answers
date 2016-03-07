@@ -31,7 +31,8 @@ class QuestionsController < ApplicationController
       # redirect_to question_path({id: @question})
       # redirect_to @question
       flash[:notice] = "Question Created Successfully!"
-      redirect_to question_path(@question)
+      redirect_to @question
+      # redirect_to question_path(@question)
     else
       # This will render app/views/questions/new.html.erb template
       # We need to be explicit about rendering the new template
@@ -48,10 +49,18 @@ class QuestionsController < ApplicationController
     @question.view_count += 1
     @question.save
     @answer = Answer.new
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @question }
+    end
   end
 
   def index
     @questions = Question.all
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @questions.select(:id, :title, :view_count) }
+    end
   end
 
   def edit
@@ -86,7 +95,8 @@ class QuestionsController < ApplicationController
     # params. the `permit` method will only allow paramsters that you explicitly
     # list, in this case: title and body
     # this is called Strong Paramters
-    params.require(:question).permit(:title, :body, :category_id)
+    params.require(:question).permit(:title, :body, :category_id,
+                                     { tag_ids: []} )
   end
 
   def find_question

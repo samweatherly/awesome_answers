@@ -1,0 +1,19 @@
+<%# we can use the form after overriding the `url` parameter. The downside to it
+    is that it won't work for `edit` situation. This will only work in `create`
+    situation. So we can't reuse it we decide to implement editing answers.%>
+<%#= form_for @answer, url: question_answers_path(@question) do |f| %>
+<%# end %>
+
+<%= @answer.errors.full_messages.join(", ") %>
+<%# passing an array to the `form_for` is a better approach for creating nested
+    resources. This approach will work for both new / edit sitatuions. So if
+    @answer is not persisted it will send a POST request to
+    question_answers_path(@question). And if @answer is persisted it will send
+    a PATCH request to question_answer_path(@question, @answer) %>
+<%= form_for [@question, @answer], remote: true do |f| %>
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.submit %>
+<% end %>

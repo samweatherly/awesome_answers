@@ -4,6 +4,17 @@ class User < ActiveRecord::Base
   has_many :questions, dependent: :nullify
   has_many :answers, dependent: :nullify
 
+  has_many :likes, dependent: :destroy
+  has_many :liked_questions, through: :likes, source: :question
+
+  has_many :favourites, dependent: :destroy
+  has_many :favourite_questions, through: :favourites, source: :question
+
+  has_many :votes, dependent: :destroy
+  has_many :voted_questions, through: :votes, source: :question
+
+
+
   has_secure_password
 
   validates :password, length: {minimum: 6}, on: :create

@@ -15,11 +15,24 @@ class Question < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
   has_many :answers, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :users, through: :likes
+
+  has_many :favourites, dependent: :destroy
+  has_many :favourite_users, through: :favourites, source: :user
 
   # This enables us to access all the comments created for all the question's
   # answers. This generates a single SQL statement with 'INNER JOIN' to
   # accomplish it
   has_many :comments, through: :answers
+
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
+
+  has_many :votes, dependent: :destroy
+  has_many :voting_users, through: :votes, source: :user
+
+
 
   validates :title, presence: true, uniqueness: { case_sensitive: false }
   validates :title, length: {minimum: 3, maximum: 255}
@@ -43,9 +56,7 @@ class Question < ActiveRecord::Base
 
   validates :view_count, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000}
 
-  validates :count_sale, numericality: {less_than_or_equal_to: :view_count}
-
-  # validates :email, format: { with: /\A[a-zA-Z]+\z}
+  # validates :count_sale, numericality: {less_than_or_equal_to: :view_count}
 
 
   # custom validation method, singluar instead of plural
@@ -63,6 +74,14 @@ class Question < ActiveRecord::Base
     order("created_at DESC").limit(number)
   end
 
+  def vote_for(user)
+    votes.find_by_user_id user
+  end
+
+  def vote_result()
+    #up_count and down_count in vote.rb
+    votes.up_count - votes.down_count
+  end
 
   def self.popular
     where("view_count > 10")
@@ -104,12 +123,26 @@ class Question < ActiveRecord::Base
     user.full_name if user
   end
 
+  def like_for(user)
+    likes.find_by_user_id user
+  end
+
+  def favourite_for(user)
+    favourites.find_by_user_id user
+  end
+
+  # is this everything?
+  def favourite_questions
+    favourites
+  end
+
+
 
   private
 
   def set_defaults
     self.view_count ||= 0
-    self.count_sale ||= view_count
+    # self.count_sale ||= view_count
   end
 
   def capitalize_title

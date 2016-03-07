@@ -21,7 +21,10 @@
   <div>
     <%= f.label :category_id %>
     <%= f.collection_select(:category_id, Category.order(:name), :id, :name) %>
-  </div>  
+  </div>
+  <div>
+    <%= f.collection_check_boxes(:tag_ids, Tag.order("name"), :id, :name) %>
+  </div>
   <div>
     <%= f.submit %>
   </div>

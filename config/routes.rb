@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
   # The main job of the routes:
   # You map a request to a controller with an action
   get "/hello" => "welcome#index"
@@ -29,15 +30,26 @@ Rails.application.routes.draw do
     post :approve
 
     # nested resources
-    #By defining 'resources :answers' nested inside 'resources
+    # By defining 'resources :answers' nested inside 'resources
     # :questions' Rails will define all the answers routes prepended
     # with '/questions/:question_id'. This enables us to have the
     # question_id handy so we can create the answer associated with
     # a question with 'question_id'
 
-    resources :answers, only: [:create, :destroy, :update]
-
+    resources :answers, only: [:create, :destroy, :update, :index]
+    resources :likes, only: [:create, :destroy]
+    resources :favourites, only: [:create, :destroy]
+    resources :votes, only: [:create, :update, :destroy]
   end
+
+  #NAMESPACE
+  # defaults: sets default format
+    namespace :api, defaults: {format: :json} do
+      namespace :v1 do
+        resources :questions, only: [:index, :show]
+      end
+    end
+
 
 # we do this to avoid triple nesting comments under 'resources :answers'
 # within the 'resources :questions' as it will be very cumbersome to
@@ -47,7 +59,14 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
 
-  resources :users, only: [:create, :new]
+  # scope :question do
+  #   resources: :favourites, only: :index
+  # end
+
+  resources :users, only: [:create, :new] do
+    #better to have favourites not nested (on its own)
+    resources :favourites, only: :index
+  end
 
 
   resources :sessions, only: [:new, :create] do

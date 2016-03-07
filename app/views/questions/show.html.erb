@@ -9,7 +9,49 @@
 <p>Category: <%= @question.category_name %> </p>
 
 <p>Created By: <%= @question.user_full_name %>
+<hr>
 
+<%# FAVOURITES %>
+
+<div id="question-favourite">
+  <%= render "/favourites/question_favourite" %>
+</div>
+
+
+
+
+<%# VOTES %>
+<% vote = @question.vote_for(current_user) %>
+
+<% if !vote %>
+  <%= link_to "Vote Up", question_votes_path(@question, {vote: {is_up: true}}),
+                                           method: :post %>
+  <%= @question.vote_result %>
+  <%= link_to "Vote Down", question_votes_path(@question, {vote: {is_up: false}}),
+                                           method: :post %>
+<% elsif vote.is_up? %>
+  <%= link_to "Remove Vote Up", question_vote_path(@question, vote),
+                                                   method: :delete %>
+  <%= @question.vote_result %>
+  <%= link_to "Vote Down", question_vote_path(@question, vote,
+                           {vote: {is_up: false}}), method: :patch %>
+<% else %>
+  <%= link_to "Vote Up", question_vote_path(@question, vote,
+                                  {vote: {is_up: true}}), method: :patch %>
+  <%= @question.vote_result %>
+  <%= link_to "Remove Vote Down", question_vote_path(@question, vote),
+                        method: :delete %>
+
+<% end %>
+<hr>
+
+
+<div id="question-like">
+  <%= render "/likes/question_like" %>
+</div>
+
+
+<hr>
 <% if can? :edit, @question %>
   <%= link_to "Edit", edit_question_path(@question) %>
 <% end %>
@@ -23,36 +65,14 @@ GET which is accomplished using Javascript/jQuery %>
 
 <% end %>
 
-<h2> Answers</h2>
-<h3> Create an Answer</h3>
+<h2>Answers</h2>
+<h3>Create an Answer</h3>
+<div id="answer-form">
+  <%= render "/answers/form" %>
+</div>
 
-<%# we can use the form after overriding the 'url' parameter. The
-downside to it is that it won't work for 'edit' situation. This will
-only work in 'create' situation. %>
-<%# form_for @answer, url: question_answers_path(@question) do |f| %>
-
-<%# end %>
-
-<%= @answer.errors.full_messages.join(", ") %>
-<%# passing an array to the 'form_for' is a better approach for
-creating nested resources. This approach will work for both new / edit
-situations. So if @answer is not persisted it will send a POST request
-to question_answers_path(@question). If @answer is persisted it will
-send a PATCH request to question_answer_path(@question, @answer) %>
-<%= form_for [@question, @answer] do |f| %>
-  <div>
-    <%= f.label :body %>
-    <%= f.text_area :body %>
-  </div>
-  <%= f.submit %>
-<% end %>
-
-<% @question.answers.each do |ans| %>
-  <%= ans.body %> (by: <%= ans.user_full_name %>)
-  <% if can? :destroy, ans %>
-  <%= link_to "Delete", question_answer_path(@question, ans),
-                          method: :delete,
-                          data: {confirm: "Are you sure?"} %>
+<div class="answers">
+  <% @question.answers.each do |ans| %>
+    <%= render "/answers/answer", answer: ans %>
   <% end %>
-  <hr>
-<% end %>
+</div>

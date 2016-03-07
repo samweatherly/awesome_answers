@@ -16,6 +16,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'faker', '~> 1.6.1'
 gem 'cowsay'
+gem 'active_model_serializers'
+gem 'quiet_assets'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -28,17 +30,26 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
+gem "font-awesome-rails"
 gem 'cancancan'
+gem 'delayed_job_active_record'
+gem 'delayed_job_web'
+gem "letter_opener", :group => :development
+gem 'bootstrap-sass'
+gem 'rack-cors', :require => 'rack/cors'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'rails_12factor', group: :production
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
 end
 
 group :development do
@@ -47,6 +58,8 @@ group :development do
   gem 'awesome_print'
   gem 'interactive_editor'
   gem 'hirb'
+  gem 'rails-erd'
+
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

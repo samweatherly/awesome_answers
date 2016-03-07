@@ -1,0 +1,11 @@
+<h1>Favourites</h1>
+
+
+<%# @favourites.each do |fav| %>
+  <%#= link_to Question.find(fav.question_id).title,
+                              question_path(fav.question_id) %>
+<%# end %>
+
+<% @questions.each do |q| %>
+  <p><%= link_to q.title, question_path(q) %>
+<% end %>

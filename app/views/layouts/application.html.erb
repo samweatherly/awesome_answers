@@ -6,10 +6,30 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-
-
+  <style>
+  body {
+    margin-top: 50px;
+  }
+  </style>
 </head>
 <body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-left" href="#"><%= image_tag "logo.png" %></a>
+    <a class="navbar-brand navbar-left" href="#">Awesome Answers</a>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><%= link_to "Hello", hello_path %></li>
+      <li><%= link_to "About", about_path %></li>
+      <li><%= link_to "Greet John", greet_path('John') %></li>
+      <li><%= link_to "Subscribe", subscribe_path %></li>
+      <li><%= link_to "New Question", new_question_path %></li>
+      <li><%= link_to "All Questions", questions_path %></li>
+  </div>
+</nav>
+
 
 <!-- hello_path and abot_path are called route helper. THey get generated
 from the content of 'routes.rb' and they are methods that can be used in
@@ -34,13 +54,23 @@ http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-li
 
 <% if user_signed_in? %>
   Hello <%= current_user.first_name %>
-  <%= link_to "Logout", sessions_path, method: :delete %>
+  <%= link_to "Logout", sessions_path, method: :delete %>  |
+  <%= link_to "All Favourites", user_favourites_path(current_user) %>  |
 <% else %>
   <%= link_to "Sign Up", new_user_path %>
 <% end %>
 
 
 <%= notice || alert %>
+
+
+<% if notice %>
+  <div>
+    <strong><%= notice %></strong>
+  </div>
+<% end %>
+
+
 
 <%= yield %>
 
