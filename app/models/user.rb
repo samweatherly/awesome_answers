@@ -28,6 +28,16 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}".titleize
   end
 
+  before_create :generate_api_key
+
+  private
+
+  def generate_api_key
+    #ensure uniqueness in db
+    begin
+      self.api_key = SecureRandom.hex(32)
+    end while User.exists?(api_key: self.api_key)
+  end
 
 
 end
