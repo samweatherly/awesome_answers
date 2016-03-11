@@ -22,10 +22,18 @@ class QuestionsController < ApplicationController
     # using params.require ensure that there is a key called 'question'
     # in my params. The 'permit' method will only allow params that
     # you explicitly list (title and body, in this case)
-    question_params = params.require(:question).permit([:title, :body])
     @question = Question.new question_params
     @question.user = current_user
     if @question.save
+      if @question.tweet_it
+        client = Twitter::REST::Client.new do |config|
+          config.consumer_key        = ENV["twitter_consumer_key"]
+          config.consumer_secret     = ENV['twitter_consumer_secret']
+          config.access_token        = current_user.twitter_token
+          config.access_token_secret = current_user.twitter_secret
+        end
+        client.update("New Question: #{@question.title}")
+      end
       #The below formats are possible ways to redirect in Rails:
       # redirect_to question_path({id: @question.id})
       # redirect_to question_path({id: @question})
@@ -59,7 +67,7 @@ class QuestionsController < ApplicationController
     @questions = Question.all
     respond_to do |format|
       format.html { render }
-      format.json { render json: @questions.select(:id, :title, :view_count) }
+      format.json { render json: @questions.select(:id, :title, :view_count, :created_at) }
     end
   end
 
@@ -95,7 +103,7 @@ class QuestionsController < ApplicationController
     # params. the `permit` method will only allow paramsters that you explicitly
     # list, in this case: title and body
     # this is called Strong Paramters
-    params.require(:question).permit(:title, :body, :category_id,
+    params.require(:question).permit(:title, :body, :category_id, :tweet_it,
                                      { tag_ids: []} )
   end
 

@@ -37,6 +37,10 @@ gem 'delayed_job_web'
 gem "letter_opener", :group => :development
 gem 'bootstrap-sass'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'omniauth-twitter'
+gem 'twitter'
+
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
@@ -49,6 +53,8 @@ gem 'rails_12factor', group: :production
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'pry-rails'
 
 end
 

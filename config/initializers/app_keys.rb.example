@@ -1,0 +1,4 @@
+ENV["email_user_name"] = 'put email user name here'
+ENV["email_password"] = 'put email password here'
+ENV["twitter_consumer_key"] = 'put Twitter consumer key (api key) here'
+ENV["twitter_consumer_secret"] = 'puts Twitter consumer secret (api secret) here'

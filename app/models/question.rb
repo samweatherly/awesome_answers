@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
+  # this is useful if I have a piece of data I don't need to store in the db
+  attr_accessor :tweet_it
   # this will fail validations (so it won't create or save) if the title
   #is not provided
 

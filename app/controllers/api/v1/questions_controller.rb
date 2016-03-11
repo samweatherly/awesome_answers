@@ -5,7 +5,7 @@ class Api::V1::QuestionsController < Api::BaseController
 
   def index
     @questions = Question.order("created_at DESC").limit(10)
-    render json: @questions
+    # render json: @questions
   end
 
   def show

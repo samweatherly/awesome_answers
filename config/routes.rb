@@ -74,7 +74,9 @@ match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
   end
 
 
-
+  get "/auth/twitter", as: :sign_in_with_twitter
+  get "/auth/twitter/callback" => "callbacks#twitter"
+  # get "/callbacks/:provider" => "callbacks#index"
 
   # post "/questions/:question_id/answer" => "answers#create"
 
