@@ -21,12 +21,19 @@
     <a class="navbar-brand navbar-left" href="#">Awesome Answers</a>
 
     <ul class="nav navbar-nav navbar-right">
-      <li><%= link_to "Hello", hello_path %></li>
-      <li><%= link_to "About", about_path %></li>
-      <li><%= link_to "Greet John", greet_path('John') %></li>
+
       <li><%= link_to "Subscribe", subscribe_path %></li>
       <li><%= link_to "New Question", new_question_path %></li>
       <li><%= link_to "All Questions", questions_path %></li>
+      <% if user_signed_in? %>
+        <li>Hello <%= current_user.first_name %></li>
+        <li><%= link_to "Logout", sessions_path, method: :delete %></li>
+        <li><%= link_to "All Favourites", user_favourites_path(current_user) %></li>
+      <% else %>
+        <li><%= link_to "Sign Up", new_user_path %></li>
+        <li><%= link_to "Sign In With Twitter", sign_in_with_twitter_path %></li>
+        <li><%= link_to "Sign In With AwesomeAnswers", new_session_path %></li>
+      <% end %>
   </div>
 </nav>
 
@@ -34,11 +41,6 @@
 <!-- hello_path and abot_path are called route helper. THey get generated
 from the content of 'routes.rb' and they are methods that can be used in
 all view files and controllers -->
-<!-- <a href="/hello">Hello</a> | -->
-<a href="<%= hello_path %>">Hello</a> |
-<!-- <a href="/about">About</a> | -->
-<a href="<%= about_path %>">About</a> |
-<a href="<%= greet_path('John') %>"> Greet John </a>  |
 
 <!-- link_to is a Rails helper method. It's a view helper method,
 meaning it's only accessible in the views/view helpers.
@@ -47,12 +49,12 @@ argument which is the 'href' value (url/path). It can take other
 options as we will see later. More info here at api.rubyonrails.org
 http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to
  -->
-<%= link_to "Subscribe", subscribe_path %>  |
+<!-- <%= link_to "Subscribe", subscribe_path %>  |
 <%= link_to "New Question", new_question_path %>  |
-<%= link_to "All Questions", questions_path %>  |
+<%= link_to "All Questions", questions_path %>  | -->
 
 
-<% if user_signed_in? %>
+<!-- <% if user_signed_in? %>
   Hello <%= current_user.first_name %>
   <%= link_to "Logout", sessions_path, method: :delete %>  |
   <%= link_to "All Favourites", user_favourites_path(current_user) %>  |
@@ -60,17 +62,17 @@ http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-li
   <%= link_to "Sign Up", new_user_path %>  |
   <%= link_to "Sign In With Twitter", sign_in_with_twitter_path %>  |
   <%= link_to "Sign In With AwesomeAnswers", new_session_path %>  |
-<% end %>
+<% end %> -->
 
 
 <%= notice || alert %>
 
 
-<% if notice %>
+<!-- <% if notice %>
   <div>
     <strong><%= notice %></strong>
   </div>
-<% end %>
+<% end %> -->
 
 
 

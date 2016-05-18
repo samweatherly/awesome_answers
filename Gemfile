@@ -39,7 +39,11 @@ gem 'bootstrap-sass'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'omniauth-twitter'
 gem 'twitter'
+gem 'devise'
+gem 'activeadmin', github: 'activeadmin'
+gem 'slim-rails'
 
+# gem 'react-rails'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

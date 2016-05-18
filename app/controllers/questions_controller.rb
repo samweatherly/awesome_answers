@@ -108,7 +108,9 @@ class QuestionsController < ApplicationController
   end
 
   def find_question
-    @question = Question.find params[:id]
+    # @question = Question.find params[:id]
+    @question = Question.includes(:answers =>
+                :user).references(:answers).find(params[:id])
   end
 
   def authorize_user

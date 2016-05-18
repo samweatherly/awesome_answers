@@ -1,13 +1,15 @@
-<h1>All Questions (<%= @questions.count %>)</h1>
-
-<%#= image_tag "red-panda.jpg" %>
-
-<table class="table table-striped">
-  <% @questions.each do |question| %>
-  <tr>
-    <td>
-    <%= link_to question.title, question_path(question) %>
-    </td>
-  </tr>
+<div class='container'>
+  <h1>All Questions (<%= @questions.count %>)</h1>
+  <%#= image_tag "red-panda.jpg" %>
+  <table class="table table-striped">
+    <% @questions.each do |question| %>
+      <%= cache question do %>
+        <tr>
+          <td>
+          <%= link_to question.title, question_path(question) %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
-</table>
+  </table>
+</div>

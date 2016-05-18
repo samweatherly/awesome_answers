@@ -9,7 +9,7 @@ class UsersController < ApplicationController
                                                :password_confirmation)
     @user = User.new user_params
     if @user.save
-      sign_in(@user)
+      user_sign_in(@user)
       redirect_to root_path, notice: "User Created!"
     else
       flash[:alert] = "User not created."

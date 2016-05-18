@@ -7,7 +7,7 @@ class CallbacksController < ApplicationController
     # Create the user account if it doesn't exist
     user ||= User.create_from_twitter(omniauth_data)
     # byebug
-    sign_in(user)
+    user_sign_in(user)
     redirect_to root_path, notice: "Signed In!"
   end
 end
